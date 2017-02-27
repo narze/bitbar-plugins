@@ -25,6 +25,18 @@ MAPPING = {
     -2: 'Very Distracting'
 }
 
+ICON = ('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAA1VBMVEUAAAAAAAAAAAAAAAAg' +
+        'ICAcHBwZGRkYGBgYGBgYGBgaGhobGBgYGBgbGBgaGhoaGhoZGRkaGhoaGhoaGhoZGRkaGBga' +
+        'GhobGRkbGBgaGBgaGhoaGBgbGRkaGhoaGhoaGRkaGRkaGBgaGRkaGRkaGRkZGRkaGBgaGRka' +
+        'GBgaGRkaGRkaGRkaGRkaGRkaGRkaGRkaGBgZGRkaGRkaGRkaGRkaGRkaGRkaGRkaGRkaGBga' +
+        'GhoZGRkaGRkaGRkaGRkaGRkaGRkbGhocGhocGhscGxsdGxsdHByE7nCRAAAAQHRSTlMAAwQF' +
+        'CAkpKjY/RUtUVmJkZWxtbnF0d3t9f4CIj5+gpaaorq+7v8fP0dXW3t/g4eLl5+jr7fP0+Pn6' +
+        '+vv7/P3+KMtxrAAAAMVJREFUGNMFwb1OAmEQhtHnnRlggwSMYkKhtiYWVt7/RdhbYmIE/CmA' +
+        'Zfeb8RyBavFaifxtr8JAXMc54uIrBCFZVptv86E1jLLKkcIPn04xZsXtquWicFHLR/khXjyt' +
+        'nRYS57tN85tovZUHl0a0oc36sClU/P3k+1Z67hQlUM03w3qGzVCo9zYxnpQLqi+iXUFLDXjz' +
+        'CJPmyxzW96OT/rFz+43jETo/Ozk97QGTTbCqzLEZYYoqIe9EF04mAcn31yCy21HwD7isX+jx' +
+        'FQgEAAAAAElFTkSuQmCC')
+
 def get(url, params):
     '''Simple function to mimic the signature of requests.get'''
     params = urllib.urlencode(params)
@@ -32,7 +44,7 @@ def get(url, params):
     return json.loads(result)
 
 if not os.path.exists(API_KEY):
-    print('X')
+    print('X | image=%s' % (ICON))
     print('---')
     print('Missing API Key at ~/Library/RescueTime.com/api.key')
     exit()
@@ -51,20 +63,9 @@ with open(API_KEY) as fp:
     pulse = get('https://www.rescuetime.com/anapi/current_productivity_pulse.json', params={
         'key': key,
     })
-    icon = ('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAA1VBMVEUAAAAAAAAAAAAAAAAg' +
-            'ICAcHBwZGRkYGBgYGBgYGBgaGhobGBgYGBgbGBgaGhoaGhoZGRkaGhoaGhoaGhoZGRkaGBga' +
-            'GhobGRkbGBgaGBgaGhoaGBgbGRkaGhoaGhoaGRkaGRkaGBgaGRkaGRkaGRkZGRkaGBgaGRka' +
-            'GBgaGRkaGRkaGRkaGRkaGRkaGRkaGRkaGBgZGRkaGRkaGRkaGRkaGRkaGRkaGRkaGRkaGBga' +
-            'GhoZGRkaGRkaGRkaGRkaGRkaGRkbGhocGhocGhscGxsdGxsdHByE7nCRAAAAQHRSTlMAAwQF' +
-            'CAkpKjY/RUtUVmJkZWxtbnF0d3t9f4CIj5+gpaaorq+7v8fP0dXW3t/g4eLl5+jr7fP0+Pn6' +
-            '+vv7/P3+KMtxrAAAAMVJREFUGNMFwb1OAmEQhtHnnRlggwSMYkKhtiYWVt7/RdhbYmIE/CmA' +
-            'Zfeb8RyBavFaifxtr8JAXMc54uIrBCFZVptv86E1jLLKkcIPn04xZsXtquWicFHLR/khXjyt' +
-            'nRYS57tN85tovZUHl0a0oc36sClU/P3k+1Z67hQlUM03w3qGzVCo9zYxnpQLqi+iXUFLDXjz' +
-            'CJPmyxzW96OT/rFz+43jETo/Ozk97QGTTbCqzLEZYYoqIe9EF04mAcn31yCy21HwD7isX+jx' +
-            'FQgEAAAAAElFTkSuQmCC')
 
 productivity_seconds = result['rows'][0][1] + result['rows'][1][1]
-print('%sm (%s%%) | color=%s image=%s' % (productivity_seconds / 60, pulse['pulse'], pulse['color'], icon))
+print('%sm (%s%%) | color=%s image=%s' % (productivity_seconds / 60, pulse['pulse'], pulse['color'], ICON))
 print('---')
 print('Rescue Time | href=https://www.rescuetime.com/dashboard?src=bitbar')
 for rank, seconds, people, productivty in result['rows']:
